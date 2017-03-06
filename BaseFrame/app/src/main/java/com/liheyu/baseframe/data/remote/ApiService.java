@@ -1,9 +1,10 @@
 package com.liheyu.baseframe.data.remote;
 
 
+import com.liheyu.baseframe.data.bean.HttpResult;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
-import retrofit2.http.Url;
 
 /**
  * Created by Liheyu on 2017/3/3.
@@ -15,5 +16,5 @@ public interface ApiService {
     String BASE_URL = "www.baidu.com";
 
     @GET
-    Observable<String> getBaidu(@Url String url);
+    Observable<HttpResult> getBaidu();
 }

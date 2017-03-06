@@ -3,7 +3,6 @@ package com.liheyu.baseframe.data;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by Liheyu on 2017/3/2.
@@ -19,7 +18,7 @@ public class Injection {
      * @return
      */
     public static DataRepository provideDataRepository(@NonNull Context context) {
-        checkNotNull(context);
+        //checkNotNull(context);
         return DataRepository.getInstance(RemoteRepository.getInstance(), LocalRepository.getInstance(context));
     }
 
