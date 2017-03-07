@@ -4,7 +4,7 @@ apply plugin: 'android-apt'
 android {
 
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.liheyu.baseframe"
         minSdkVersion 16
@@ -34,17 +34,25 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.0'
     testCompile 'junit:junit:4.12'
     //Dagger2注解
-    compile 'com.google.dagger:dagger:2.0.2'
-    compile 'com.google.dagger:dagger-compiler:2.0.2'
-    provided 'org.glassfish:javax.annotation:10.0-b28'
+//    compile 'com.google.dagger:dagger:2.0.2'
+//    compile 'com.google.dagger:dagger-compiler:2.0.2'
+//    provided 'org.glassfish:javax.annotation:10.0-b28'
     //  butterkinfe
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     //rxjava2
     compile 'io.reactivex.rxjava2:rxjava:2.0.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //rxife
+    compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
+    compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
     //retrofit2
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    //leakCanary
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+
 }
