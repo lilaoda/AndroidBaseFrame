@@ -6,5 +6,5 @@ package com.liheyu.baseframe;
  */
 
 public interface BasePresenter {
-    void start();
+
 }

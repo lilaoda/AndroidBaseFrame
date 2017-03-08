@@ -2,15 +2,16 @@ package com.liheyu.baseframe.view.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.liheyu.baseframe.R;
+import com.liheyu.baseframe.contract.LoginContract;
 import com.liheyu.baseframe.data.Injection;
 import com.liheyu.baseframe.data.bean.User;
+import com.liheyu.baseframe.presenter.LoginPresenter;
 import com.liheyu.baseframe.utils.UiUtils;
 import com.liheyu.baseframe.view.BaseActivity;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +36,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
         mPresenter = new LoginPresenter(this, Injection.provideDataRepository(getApplicationContext()));
     }
 
@@ -47,16 +47,21 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     public void loginSuccess(User user) {
-        Log.e("user:", user.toString());
+
     }
 
     @Override
     public void loginFailure(String string) {
-        Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void setPresenter(LoginContract.Presenter presenter) {
-        mPresenter = presenter;
+
+    }
+
+    @Override
+    public <R>LifecycleTransformer<R> getLifeTransformer() {
+        return bindToLifecycle();
     }
 }

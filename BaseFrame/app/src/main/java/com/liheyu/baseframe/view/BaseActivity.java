@@ -3,17 +3,17 @@ package com.liheyu.baseframe.view;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
 import com.liheyu.baseframe.R;
 import com.liheyu.baseframe.utils.StatusBarUtil;
 import com.liheyu.baseframe.widget.DialogLoading;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 /**
  * Created by liheyu on 2017/3/1.
  */
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends RxAppCompatActivity {
 
     protected DialogLoading mDialogLoading;
 
@@ -44,4 +44,5 @@ public class BaseActivity extends AppCompatActivity {
             mDialogLoading.dismiss();
         }
     }
+
 }

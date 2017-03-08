@@ -1,4 +1,4 @@
-package com.liheyu.baseframe.data.bean;
+package com.liheyu.baseframe.http;
 
 /**
  * Created by Liheyu on 2017/3/6.
@@ -6,7 +6,7 @@ package com.liheyu.baseframe.data.bean;
  */
 
 public class HttpResult<T> {
-    public int code;
-    public String message;
+    public String info;
+    public int status;
     public T data;
 }

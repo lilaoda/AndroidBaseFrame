@@ -7,6 +7,9 @@ import com.liheyu.baseframe.utils.FileUtils;
 import com.liheyu.baseframe.utils.NetworkUtls;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -21,7 +24,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Created by lilaoda on 2016/8/30.
+ * OkHttp管理类，可添加缓存，添加公共请求参数
  */
 public class OkhttpManager {
 
@@ -48,18 +51,17 @@ public class OkhttpManager {
         return mOkHttpBuilder.build();
     }
 
-    public OkHttpClient getPubOKhttp() {
-        return mOkHttpBuilder.addInterceptor(new GetParamsInterceptor()).build();
-    }
 
-
-    public OkHttpClient getCacheOKhttp(final Context context) {
+    public OkHttpClient getCacheOKhttp( Context context) {
         return mOkHttpBuilder
                 .cache(new Cache(FileUtils.getCacheFile(context, "file_cache"), 1024 * 1024 * 100))
                 .addInterceptor(new CacheIntercepter(context))
                 .build();
     }
 
+    /**
+     * 添加缓存
+     */
     static class CacheIntercepter implements Interceptor {
 
         private Context context;
@@ -103,20 +105,34 @@ public class OkhttpManager {
     /**
      * GET增加公共参数
      */
-    static class GetParamsInterceptor implements Interceptor {
+    private static class GetParamsInterceptor implements Interceptor {
+
+        HashMap<String,String> paramsMap;
+
+        public GetParamsInterceptor(HashMap<String, String> paramsMap) {
+            this.paramsMap = paramsMap;
+        }
+
         @Override
         public Response intercept(Chain chain) throws IOException {
+
             Request oldRequest = chain.request();
             HttpUrl oldUrl = oldRequest.url();
-            HttpUrl newUrl = oldUrl
+
+            HttpUrl.Builder builder = oldUrl
                     .newBuilder()
                     .scheme(oldUrl.scheme())
-                    .host(oldUrl.host())
-//                    .addQueryParameter(GlobeConstants.sid, account.getSid())
-//                    .addQueryParameter(GlobeConstants.sign, account.getSign())
-//                    .addQueryParameter(GlobeConstants.sign, Md5Utils.encode(account.getToken() + System.currentTimeMillis() + ""))
-//                    .addQueryParameter(GlobeConstants.timestamp, String.valueOf(System.currentTimeMillis()))
-                    .build();
+                    .host(oldUrl.host());
+
+            if (paramsMap != null) {
+                Iterator<Map.Entry<String, String>> iterator = paramsMap.entrySet().iterator();
+                while (iterator.hasNext()){
+                    Map.Entry<String, String> entry = iterator.next();
+                    builder.addQueryParameter(entry.getKey(),entry.getValue());
+                }
+            }
+
+            HttpUrl newUrl = builder.build();
             Request newRequest = oldRequest.newBuilder()
                     .method(oldRequest.method(), oldRequest.body())
                     .url(newUrl)
@@ -129,27 +145,27 @@ public class OkhttpManager {
      * POST添加公共参数
      */
     static class PostParamsInterceptor implements Interceptor {
-        private static final String TAG = "request params";
 
-        public PostParamsInterceptor() {
+        HashMap<String,String> paramsMap;
+
+        public PostParamsInterceptor(HashMap<String, String> paramsMap) {
+            this.paramsMap = paramsMap;
         }
 
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request orgRequest = chain.request();
             RequestBody body = orgRequest.body();
-            //收集请求参数，方便调试
-            StringBuilder paramsBuilder = new StringBuilder();
+
             if (body != null) {
                 RequestBody newBody = null;
                 if (body instanceof FormBody) {
-                    newBody = addParamsToFormBody((FormBody) body, paramsBuilder);
+                    newBody = addParamsToFormBody((FormBody) body);
                 } else if (body instanceof MultipartBody) {
-                    newBody = addParamsToMultipartBody((MultipartBody) body, paramsBuilder);
+                    newBody = addParamsToMultipartBody((MultipartBody) body);
                 }
 
                 if (null != newBody) {
-                    Log.e(TAG, paramsBuilder.toString());
                     Request newRequest = orgRequest.newBuilder()
                             .url(orgRequest.url())
                             .method(orgRequest.method(), newBody)
@@ -162,20 +178,18 @@ public class OkhttpManager {
         }
 
         // 为MultipartBody类型请求体添加参数 paramsBuilder打印用
-        private MultipartBody addParamsToMultipartBody(MultipartBody body, StringBuilder paramsBuilder) {
+        private MultipartBody addParamsToMultipartBody(MultipartBody body) {
             MultipartBody.Builder builder = new MultipartBody.Builder();
             builder.setType(MultipartBody.FORM);
 
-            long temstemp = System.currentTimeMillis();
-//
-//            Account account = Account.getAccount();
-//            builder.addFormDataPart("sid", account.getSid());
-//            builder.addFormDataPart("sign", Md5Utils.encode(account.getToken() + temstemp + ""));
-//            builder.addFormDataPart("timestamp", String.valueOf(temstemp));
-//
-//            paramsBuilder.append("sid=" + account.getSid());
-//            paramsBuilder.append("&sign=" + Md5Utils.encode(account.getToken() + temstemp + ""));
-//            paramsBuilder.append("&timestamp=" + String.valueOf(temstemp));
+            if (paramsMap != null) {
+                Iterator<Map.Entry<String, String>> iterator = paramsMap.entrySet().iterator();
+                while (iterator.hasNext()){
+                    Map.Entry<String, String> entry = iterator.next();
+                    builder.addFormDataPart(entry.getKey(),entry.getValue());
+                }
+            }
+
             //添加原请求体
             for (int i = 0; i < body.size(); i++) {
                 builder.addPart(body.part(i));
@@ -183,27 +197,23 @@ public class OkhttpManager {
             return builder.build();
         }
 
-        // 为FormBody类型请求体添加参数 paramsBuilder打印用
-        private FormBody addParamsToFormBody(FormBody body, StringBuilder paramsBuilder) {
+        /**
+         * 为FormBody类型请求体添加参数
+         */
+        private FormBody addParamsToFormBody(FormBody body) {
             FormBody.Builder builder = new FormBody.Builder();
-//            Account account = Account.getAccount();
-//            builder.add("sid", account.getSid());
-//            paramsBuilder.append("sid=" + account.getSid());
-//
-//            long temstemp = System.currentTimeMillis();
-//
-//            builder.add("sign", Md5Utils.encode(account.getToken() + temstemp + ""));
-//            paramsBuilder.append("&sign" + Md5Utils.encode(account.getToken() + temstemp + ""));
-//            builder.add("timestamp", String.valueOf(temstemp));
-//            paramsBuilder.append("&timestamp" + String.valueOf(temstemp));
+
+            if (paramsMap != null) {
+                Iterator<Map.Entry<String, String>> iterator = paramsMap.entrySet().iterator();
+                while (iterator.hasNext()){
+                    Map.Entry<String, String> entry = iterator.next();
+                    builder.add(entry.getKey(),entry.getValue());
+                }
+            }
 
             //添加原请求体
             for (int i = 0; i < body.size(); i++) {
                 builder.addEncoded(body.encodedName(i), body.encodedValue(i));
-                paramsBuilder.append("&");
-                paramsBuilder.append(body.name(i));
-                paramsBuilder.append("=");
-                paramsBuilder.append(body.value(i));
             }
             return builder.build();
         }

@@ -1,4 +1,4 @@
-package com.liheyu.baseframe.view.activity;
+package com.liheyu.baseframe.contract;
 
 import com.liheyu.baseframe.BasePresenter;
 import com.liheyu.baseframe.BaseView;
@@ -18,6 +18,7 @@ public interface LoginContract {
         void loginSuccess(User user);
 
         void loginFailure(String string);
+
     }
 
     interface Presenter extends BasePresenter {

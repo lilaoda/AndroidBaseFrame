@@ -1,21 +1,27 @@
 package com.liheyu.baseframe.data;
 
-import android.support.annotation.NonNull;
-
 import com.liheyu.baseframe.data.bean.User;
+import com.liheyu.baseframe.http.ApiService;
+import com.liheyu.baseframe.http.HttpManager;
+
+import io.reactivex.Observable;
 
 /**
  * Created by Liheyu on 2017/3/2.
  * Email:liheyu999@163.com
  * <p>
- * 网络数据仓库 执行网络请求获取结果
+ * 网络数据仓库 主要功能获取相应的要求的observable
  */
 
 public class RemoteRepository {
 
     private static RemoteRepository INSTANCE = null;
+    private ApiService mApiService;
+    private final HttpManager mHttpManager;
 
     private RemoteRepository() {
+        mHttpManager = HttpManager.getInstance();
+        mApiService = mHttpManager.getService();
     }
 
     public static RemoteRepository getInstance() {
@@ -25,12 +31,7 @@ public class RemoteRepository {
         return INSTANCE;
     }
 
-    public void login(String userName, String password, @NonNull DataSource.LoginCallback callback) {
-        if (userName.equals("liheyu") && password.equals("123456")) {
-            User user = new User(userName, password);
-            callback.loginSuccess(user);
-        } else {
-            callback.loginFailed("登陆失败了...");
-        }
+    public Observable<User> login(String userName, String password) {
+        return mHttpManager.toSurcible(mApiService.login(userName, password));
     }
 }

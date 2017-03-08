@@ -1,8 +1,14 @@
 package com.liheyu.baseframe.data;
 
+import com.liheyu.baseframe.data.bean.User;
+
+import io.reactivex.Observable;
+
 /**
  * Created by Liheyu on 2017/3/2.
  * Email:liheyu999@163.com
+ *
+ * 统一管理各种数据请求
  */
 
 public class DataRepository {
@@ -13,7 +19,7 @@ public class DataRepository {
 
     private LocalRepository mLocalRepository;
 
-    private DataRepository(RemoteRepository remoteRepository,LocalRepository localRepository) {
+    private DataRepository(RemoteRepository remoteRepository, LocalRepository localRepository) {
         this.mLocalRepository = localRepository;
         this.mRemoteRepository = remoteRepository;
     }
@@ -26,9 +32,9 @@ public class DataRepository {
         return INSTANCE;
     }
 
-    //==================================================以下为远程数据操作=================================
+    /*==================================================以下为远程数据操作=================================*/
 
-    public void login(String userNmae, String password, DataSource.LoginCallback callback) {
-        mRemoteRepository.login(userNmae, password, callback);
+    public Observable<User> login(String userNmae, String password) {
+        return mRemoteRepository.login(userNmae, password);
     }
 }
