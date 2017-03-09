@@ -21,7 +21,7 @@ public class RemoteRepository {
 
     private RemoteRepository() {
         mHttpManager = HttpManager.getInstance();
-        mApiService = mHttpManager.getService();
+        mApiService = mHttpManager.getRetrofit().create(ApiService.class);
     }
 
     public static RemoteRepository getInstance() {

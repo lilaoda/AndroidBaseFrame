@@ -20,6 +20,7 @@ import java.util.Date;
  * Created by lilaoda on 2016/8/23.
  */
 public class UiUtils {
+
     private UiUtils() {
 
     }

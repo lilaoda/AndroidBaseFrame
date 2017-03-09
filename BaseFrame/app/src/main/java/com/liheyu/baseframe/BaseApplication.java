@@ -3,6 +3,7 @@ package com.liheyu.baseframe;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
@@ -19,6 +20,11 @@ import java.util.ListIterator;
 
 public class BaseApplication extends Application {
 
+
+    //此处的上下文为应用程序的上下文 伴随着程序的存在而存在 并不实际影响Java内存处理；
+    private static Context context = null;
+    public static int mAPPTid;
+
     public List<AppCompatActivity> activitys = new LinkedList<>();
     public List<Service> services = new LinkedList<>();
 
@@ -26,7 +32,15 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        context = getApplicationContext();
+        mAPPTid = android.os.Process.myTid();
+
         initLeakCanary();
+    }
+
+    public static Context getContext() {
+        return context;
     }
 
     private void initLeakCanary() {

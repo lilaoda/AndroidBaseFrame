@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 
+import com.liheyu.baseframe.BaseApplication;
 import com.liheyu.baseframe.R;
 import com.liheyu.baseframe.utils.StatusBarUtil;
 import com.liheyu.baseframe.widget.DialogLoading;
@@ -20,6 +21,8 @@ public class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BaseApplication application = (BaseApplication) getApplication();
+        application.addActivity(this);
     }
 
     @Override
@@ -45,4 +48,11 @@ public class BaseActivity extends RxAppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BaseApplication application = (BaseApplication) getApplication();
+        application.removeActivity(this);
+        dismissLoadingDialog();
+    }
 }

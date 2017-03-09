@@ -29,7 +29,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     @BindView(R.id.edit_password)
     EditText editPassword;
 
-    LoginContract.Presenter mPresenter;
+    LoginPresenter mPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,4 +64,5 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     public <R>LifecycleTransformer<R> getLifeTransformer() {
         return bindToLifecycle();
     }
+
 }

@@ -13,6 +13,7 @@ import java.math.BigDecimal;
  * Created by Administrator on 2016/9/1.
  */
 public class FileUtils {
+
     private FileUtils() {
     }
 
@@ -57,6 +58,7 @@ public class FileUtils {
 
     /**
      * 新建外部缓存文件
+     *
      * @param context
      * @param fileName 文件名
      * @return
@@ -65,7 +67,7 @@ public class FileUtils {
         File file = null;
         if (isSDCardEnabled()) {
             file = new File(context.getExternalCacheDir(), fileName);
-            if(!file.exists()){
+            if (!file.exists()) {
                 //如果不存在就创建文件JIA,防止获取路径时发生异常
                 file.mkdir();
             }
@@ -75,13 +77,14 @@ public class FileUtils {
 
     /**
      * 新建内部缓存文件
+     *
      * @param context
      * @param fileName 文件名
      * @return
      */
     public static File getInternalCacheFile(Context context, String fileName) {
         File file = new File(context.getCacheDir(), fileName);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.mkdir();
         }
         return file;
@@ -110,7 +113,7 @@ public class FileUtils {
                 dir.mkdirs();
             }
             return dir.getAbsolutePath();
-       }
+        }
     }
 
     /**

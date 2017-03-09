@@ -12,6 +12,7 @@ import android.provider.Settings;
  * Created by Administrator on 2016/9/1.
  */
 public class NetworkUtls {
+
     private NetworkUtls() {
     }
 
