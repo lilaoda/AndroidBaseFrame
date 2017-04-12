@@ -4,18 +4,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-  <EditText
-      android:layout_width="match_parent"
-      android:layout_height="50dp"
-      android:id="@+id/edit_name"/>
-
+    <!--    <item name="android:textColorPrimary">@android:color/darker_gray</item>
+          <item name="actionMenuTextColor">@android:color/darker_gray</item>
+          <item name="colorControlNormal">@color/colorAccent</item>
+          <item name="colorControlActivated">@color/colorAccent</item>-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/text"/>
     <EditText
+        android:id="@+id/edit_name"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/edit_password"/>
+        android:layout_height="50dp" />
+<!--android:visibility="gone"-->
+    <EditText
+
+        android:id="@+id/edit_password"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
     <Button
+        android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="login"
-        android:id="@+id/btn_login"/>
+        android:text="login" />
 </LinearLayout>

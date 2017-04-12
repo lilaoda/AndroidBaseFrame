@@ -4,6 +4,7 @@ package com.liheyu.baseframe.http;
 import com.liheyu.baseframe.data.bean.User;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -15,9 +16,14 @@ import retrofit2.http.POST;
 
 public interface ApiService {
 
-    String BASE_URL = "http://h5.waqudao.com/";
+    String BASE_URL = "http://192.168.8.86:8080/";
 
     @FormUrlEncoded
     @POST("User/Public/appLogin")
     Observable<HttpResult<User>> login(@Field("mobile") String username, @Field("passwd") String passwd);
+
+    @POST("andfixtext.apatch")
+    Observable<ResponseBody> downloadPatch();
+
+
 }

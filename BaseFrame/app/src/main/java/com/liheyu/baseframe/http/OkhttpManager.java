@@ -1,6 +1,6 @@
 package com.liheyu.baseframe.http;
 
-import com.liheyu.baseframe.BaseApplication;
+import com.liheyu.baseframe.app.BaseApplicationLike;
 import com.liheyu.baseframe.http.interceptor.CacheIntercepter;
 import com.liheyu.baseframe.utils.FileUtils;
 
@@ -53,8 +53,8 @@ public class OkhttpManager {
      */
     public OkHttpClient getCacheOKhttp() {
         return mOkHttpBuilder
-                .cache(new Cache(FileUtils.getCacheFile(BaseApplication.getContext(), "file_cache"), 1024 * 1024 * 100))
-                .addInterceptor(new CacheIntercepter(BaseApplication.getContext()))
+                .cache(new Cache(FileUtils.getCacheFile(BaseApplicationLike.getContext(), "file_cache"), 1024 * 1024 * 100))
+                .addInterceptor(new CacheIntercepter(BaseApplicationLike.getContext()))
                 .build();
     }
 }

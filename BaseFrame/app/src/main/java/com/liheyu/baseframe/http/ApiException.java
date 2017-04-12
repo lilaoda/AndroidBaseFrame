@@ -8,8 +8,6 @@ package com.liheyu.baseframe.http;
 public class ApiException extends Exception {
 
 
-    public static final int codetest=001;
-
     public ApiException() {
     }
 

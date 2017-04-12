@@ -1,7 +1,7 @@
 package com.liheyu.baseframe.contract;
 
-import com.liheyu.baseframe.BasePresenter;
-import com.liheyu.baseframe.BaseView;
+import com.liheyu.baseframe.app.BasePresenter;
+import com.liheyu.baseframe.app.BaseView;
 import com.liheyu.baseframe.data.bean.User;
 
 /**

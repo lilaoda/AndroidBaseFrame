@@ -3,9 +3,10 @@ package com.liheyu.baseframe.view;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
-import com.liheyu.baseframe.BaseApplication;
 import com.liheyu.baseframe.R;
+import com.liheyu.baseframe.app.BaseApplicationLike;
 import com.liheyu.baseframe.utils.StatusBarUtil;
 import com.liheyu.baseframe.widget.DialogLoading;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -21,8 +22,8 @@ public class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BaseApplication application = (BaseApplication) getApplication();
-        application.addActivity(this);
+        BaseApplicationLike.getInstance().addActivity(this);
+        Log.e("BaseActivityonCreate", "BaseActivity添加了...");
     }
 
     @Override
@@ -51,8 +52,8 @@ public class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        BaseApplication application = (BaseApplication) getApplication();
-        application.removeActivity(this);
+//        BaseApplication application = (BaseApplication) getApplication();
+        BaseApplicationLike.getInstance().removeActivity(this);
         dismissLoadingDialog();
     }
 }

@@ -2,7 +2,6 @@ package com.liheyu.baseframe.presenter;
 
 import android.util.Log;
 
-import com.liheyu.baseframe.BaseApplication;
 import com.liheyu.baseframe.contract.LoginContract;
 import com.liheyu.baseframe.data.DataRepository;
 import com.liheyu.baseframe.data.bean.User;
@@ -38,7 +37,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     public void onFailure(Throwable e) {
                         Log.e("onFailure", e.getMessage());
                         Log.e("1", android.os.Process.myTid() + "");
-                        Log.e("1", BaseApplication.mAPPTid + "");
+                       // Log.e("1", BaseApplication.mAPPTid + "");
                     }
                 });
     }

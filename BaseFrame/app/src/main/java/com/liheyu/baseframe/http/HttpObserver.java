@@ -6,9 +6,6 @@ import android.content.DialogInterface;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.liheyu.baseframe.BaseApplication;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -57,7 +54,6 @@ public abstract class HttpObserver<T> implements Observer<T> {
         if (e instanceof IOException) {
             errorMsg = "网络错误";
         } else if (e instanceof HttpException) {
-//            errorMsg = ((HttpException) e).response().message();
             errorMsg = "网络错误";
         } else if (e instanceof TimeoutException) {
             errorMsg = "连接超时，请稍候再试";
@@ -70,7 +66,7 @@ public abstract class HttpObserver<T> implements Observer<T> {
         //如果用户主动取消 则不提示任何信息
         if (!isUserCancel) {
             if (Looper.myLooper() == Looper.getMainLooper()) {
-                Toast.makeText(BaseApplication.getContext(), errorMsg, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(BaseApplication.getContext(), errorMsg, Toast.LENGTH_SHORT).show();
             }
         } else {
             isUserCancel = false;
@@ -97,6 +93,8 @@ public abstract class HttpObserver<T> implements Observer<T> {
             progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
+                    //用户主动取消时调用
+                    Log.e("cancel","cancel");
                     isUserCancel = true;
                     mDisposable.dispose();
                 }
